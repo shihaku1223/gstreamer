@@ -108,6 +108,7 @@ typedef enum {
   GST_VIDEO_TEST_SRC_SPOKES,
   GST_VIDEO_TEST_SRC_GRADIENT,
   GST_VIDEO_TEST_SRC_COLORS,
+  GST_VIDEO_TEST_SRC_CLOCK,
 
   /**
    * GstVideoTestSrcPattern::smpte-rp-219:

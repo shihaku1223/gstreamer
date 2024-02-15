@@ -190,6 +190,7 @@ gst_video_test_src_pattern_get_type (void)
     {GST_VIDEO_TEST_SRC_COLORS, "Colors", "colors"},
     {GST_VIDEO_TEST_SRC_SMPTE_RP_219, "SMPTE test pattern, RP 219 conformant",
         "smpte-rp-219"},
+    {GST_VIDEO_TEST_SRC_CLOCK, "Clockwise", "clock"},
     {0, NULL, NULL}
   };
 
@@ -547,6 +548,7 @@ gst_video_test_src_is_static_pattern (GstVideoTestSrc * videotestsrc)
     case GST_VIDEO_TEST_SRC_SNOW:
     case GST_VIDEO_TEST_SRC_BLINK:
     case GST_VIDEO_TEST_SRC_BALL:
+    case GST_VIDEO_TEST_SRC_CLOCK:
       return FALSE;
 
     case GST_VIDEO_TEST_SRC_ZONE_PLATE:
@@ -582,6 +584,7 @@ gst_video_test_src_is_static_pattern (GstVideoTestSrc * videotestsrc)
     case GST_VIDEO_TEST_SRC_SPOKES:
     case GST_VIDEO_TEST_SRC_GRADIENT:
     case GST_VIDEO_TEST_SRC_COLORS:
+    case GST_VIDEO_TEST_SRC_CLOCK:
       if (videotestsrc->horizontal_speed)
         return FALSE;
       break;
@@ -678,6 +681,9 @@ gst_video_test_src_set_pattern (GstVideoTestSrc * videotestsrc,
       break;
     case GST_VIDEO_TEST_SRC_SMPTE_RP_219:
       videotestsrc->make_image = gst_video_test_src_smpte_rp_219;
+      break;
+    case GST_VIDEO_TEST_SRC_CLOCK:
+      videotestsrc->make_image = gst_video_test_src_clock;
       break;
     default:
       g_assert_not_reached ();

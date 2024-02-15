@@ -1891,3 +1891,67 @@ gst_video_test_src_colors (GstVideoTestSrc * v, GstClockTime pts,
     videotestsrc_convert_tmpline (p, frame, j);
   }
 }
+
+void
+gst_video_test_src_clock (GstVideoTestSrc * v, GstClockTime pts,
+    GstVideoFrame * frame)
+{
+  paintinfo pi = PAINT_INFO_INIT;
+  paintinfo *p = &pi;
+  int w = frame->info.width, h = frame->info.height;
+
+  videotestsrc_setup_paintinfo (v, p, w, h);
+  gst_video_test_src_unicolor (v, frame, COLOR_BLACK);
+
+  gint64 fps = v->info.fps_n / v->info.fps_d;
+  gint64 tick_count = (v->n_frames - 1) % fps;
+
+  gdouble deg;
+  gdouble radius = h / 2 - 20;
+  gdouble clock_deg = tick_count * 360 / fps;
+
+  //clock_deg = 120;
+  if (clock_deg <= 90) {
+    deg = 90 - clock_deg;
+  } else {
+    deg = 360 - (clock_deg - 90);
+  }
+
+  gdouble rad = deg * G_PI / 180.0;
+  int center_x = w / 2;
+  int center_y = h / 2;
+  gdouble ly = sin (rad) * radius;
+  //printf("%ld %ld %ld %lf\n", fps, v->n_frames, tick_count, deg);
+  //printf("%lf\n", ly);
+  //printf("%lf %lf %lf\n", deg, clock_deg, ly);
+
+  if (deg >= 0 && deg < 180) {
+    for (int i = center_y - ly; i <= center_y; i++) {
+      double dy = center_y - i;
+      double dl = dy / sin (rad);
+      double dx = cos (rad) * dl;
+
+      p->color = &p->colors[COLOR_BLACK];
+      p->paint_tmpline (p, 0, w);
+
+      p->color = &p->colors[COLOR_WHITE];
+      p->paint_tmpline (p, center_x + dx, 10);
+
+      videotestsrc_convert_tmpline (p, frame, i);
+    }
+  } else if (deg >= 180) {
+    for (int i = center_y; i < center_y - ly; i++) {
+      double dy = i - center_y;
+      double dl = dy / sin (rad);
+      double dx = cos (rad) * dl;
+
+      p->color = &p->colors[COLOR_BLACK];
+      p->paint_tmpline (p, 0, w);
+
+      p->color = &p->colors[COLOR_WHITE];
+      p->paint_tmpline (p, center_x - dx, 10);
+
+      videotestsrc_convert_tmpline (p, frame, i);
+    }
+  }
+}

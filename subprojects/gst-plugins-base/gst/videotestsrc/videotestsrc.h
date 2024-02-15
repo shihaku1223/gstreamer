@@ -86,5 +86,6 @@ void    gst_video_test_src_pinwheel     (GstVideoTestSrc * v, GstClockTime pts, 
 void    gst_video_test_src_spokes       (GstVideoTestSrc * v, GstClockTime pts, GstVideoFrame * frame);
 void    gst_video_test_src_gradient     (GstVideoTestSrc * v, GstClockTime pts, GstVideoFrame * frame);
 void    gst_video_test_src_colors       (GstVideoTestSrc * v, GstClockTime pts, GstVideoFrame * frame);
+void    gst_video_test_src_clock        (GstVideoTestSrc * v, GstClockTime pts, GstVideoFrame * frame);
 
 #endif
